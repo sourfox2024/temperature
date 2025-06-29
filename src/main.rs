@@ -1,35 +1,37 @@
 use std::io::{self, Write};
 
+fn celsius_to_fahrenheit(celsius: f64) -> f64 {
+    celsius * 9.0 / 5.0 + 32.0
+}
+
 fn main() {
-    // Let's variable 'temperature' become mutable
-    let mut celcius = String::new();
+    let mut celsius_input = String::new();
+    let celsius_value: f64;
 
     loop {
-        print!("Enter the temperature in celcius: ");
+        print!("Enter the temperature in Celsius: ");
         io::stdout().flush().expect("Failed to flush stdout"); // Ensure prompt is displayed immediately
 
-        celcius.clear(); //clears the string for new input.
+        celsius_input.clear(); // Clears the string for new input
 
         io::stdin()
-            .read_line(&mut celcius)
+            .read_line(&mut celsius_input)
             .expect("Failed to read line");
 
-        if let Ok(number) = celcius.trim().parse::<f64>() {
-            break;
-        } else {
-            println!("That's not a valid number. Please try again.")
+        match celsius_input.trim().parse::<f64>() {
+            Ok(number) => {
+                celsius_value = number;
+                break;
+            }
+            Err(_) => {
+                println!("That's not a valid number. Please try again.");
+            }
         }
     }
 
-    // convert celsius string to integer c
-    match celcius.trim().parse::<i32>() {
-        Ok(input_num) => {
-            let c = input_num;
-            let fahrenheit = c as f64 * 9.0 / 5.0 + 32.0;
+    let fahrenheit = celsius_to_fahrenheit(celsius_value);
 
-            println!("\nTemperature in Celsius: {}°C", c);
-            println!("Temperature in Fahrenheit: {}°F", fahrenheit)
-        }
-        Err(error) => println!("converting error: {error}"),
-    }
+    println!("
+Temperature in Celsius: {}°C", celsius_value);
+    println!("Temperature in Fahrenheit: {}°F", fahrenheit);
 }
